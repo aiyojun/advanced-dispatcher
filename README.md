@@ -12,10 +12,8 @@ Then, run:
 
 `./_your_project_/bin/bridge.py`
 
-## description
+## http api
 
-http api
+`[get] tasks/manage` # to obtain all your set tasks.
 
-`get tasks/manage` # to obtain all your set tasks.
-
-`post tasks/manage` # to update/add your new tasks.
+`[post] tasks/manage` # to update/add your new tasks.
