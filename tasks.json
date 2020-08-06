@@ -1,0 +1,22 @@
+{
+  "tasks": [
+    {
+      "bridge": 1,
+      "command": "/bin/python3  /root/jqs/advanced-dispatcher/t1.py",
+      "cron": "*/1 * * * *",
+      "uuid": "xxx001"
+    },
+    {
+      "bridge": 1,
+      "command": "/bin/python3  /root/jqs/advanced-dispatcher/t2.py",
+      "cron": "*/1 * * * *",
+      "uuid": "xxx002"
+    },
+    {
+      "bridge": 1,
+      "command": "/bin/python3  /root/jqs/advanced-dispatcher/t2.py",
+      "cron": "*/1 * * * *",
+      "uuid": "xxx003"
+    }
+  ]
+}
