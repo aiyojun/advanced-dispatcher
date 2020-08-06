@@ -2,7 +2,7 @@
 
 rm -rf tmp
 mkdir tmp
-cp -r bin tmp
+cp -r bin public tmp
 cp tasks.json tmp
 
 echo -n "-- project uuid: "
@@ -23,6 +23,7 @@ sed -i "s#JSONPATH#$json_path#g" tmp/bin/bridge.py
 sed -i "s#TRIGGERPATH#${trigger_path}#g" tmp/bin/bridge.py
 sed -i "s#HTTP_PORT#$http_port#g" tmp/bin/bridge.py
 sed -i "s#HTTP_PORT#$http_port#g" tmp/bin/trigger.py
+sed -i "s#HTTP_PORT#$http_port#g" tmp/public/index.htm
 
 mv tmp/* $install_path
 rm -rf tmp

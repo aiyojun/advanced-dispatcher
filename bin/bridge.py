@@ -9,7 +9,7 @@ from threading import Thread, Lock
 
 from tornado.ioloop import IOLoop
 from tornado.httpserver import HTTPServer
-from tornado.web import Application, RequestHandler
+from tornado.web import Application, RequestHandler, StaticFileHandler
 
 from crontab import RootCronTabDriver
 
@@ -204,10 +204,17 @@ class MicroServer:
         self.urls = [
             (r"/cron/trigger", CronJobHandler),
             (r"/tasks/manage", TasksManager),
+            (r'^/(.*?)$', StaticFileHandler, {
+                "path": os.path.join(os.path.dirname(__serialization__), "public"),
+                "default_filename": "index.htm"}),
         ]
 
     def start(self):
-        app = Application(self.urls)
+        settings = {
+            'template_path': os.path.dirname(__serialization__) + "/public",
+            'static_path': os.path.dirname(__serialization__) + "/public",
+        }
+        app = Application(self.urls, **settings)
         server = HTTPServer(app)
         port = int("HTTP_PORT")
         server.listen(port)

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>advanced dispatcher</title>
+</head>
+<body>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		html, body {
+			width: 100%;
+			height: 100%;
+		}
+		.button,
+		button,
+		input[type='button'],
+		input[type='reset'],
+		input[type='submit'] {
+		  background-color: #9b4dca;
+		  border: 0.1rem solid #9b4dca;
+		  border-radius: .4rem;
+		  color: #fff;
+		  cursor: pointer;
+		  display: inline-block;
+		  font-size: 1.1rem;
+		  font-weight: 700;
+		  height: 1.6rem;
+		  letter-spacing: .1rem;
+		  line-height: 1.6rem;
+		  padding: 0 3.0rem;
+		  text-align: center;
+		  text-decoration: none;
+		  text-transform: uppercase;
+		  white-space: nowrap;
+		}
+
+		.button:focus, .button:hover,
+		button:focus,
+		button:hover,
+		input[type='button']:focus,
+		input[type='button']:hover,
+		input[type='reset']:focus,
+		input[type='reset']:hover,
+		input[type='submit']:focus,
+		input[type='submit']:hover {
+		  background-color: #606c76;
+		  border-color: #606c76;
+		  color: #fff;
+		  outline: 0;
+		}
+
+		.button[disabled],
+		button[disabled],
+		input[type='button'][disabled],
+		input[type='reset'][disabled],
+		input[type='submit'][disabled] {
+		  cursor: default;
+		  opacity: .5;
+		}
+
+		.button[disabled]:focus, .button[disabled]:hover,
+		button[disabled]:focus,
+		button[disabled]:hover,
+		input[type='button'][disabled]:focus,
+		input[type='button'][disabled]:hover,
+		input[type='reset'][disabled]:focus,
+		input[type='reset'][disabled]:hover,
+		input[type='submit'][disabled]:focus,
+		input[type='submit'][disabled]:hover {
+		  background-color: #9b4dca;
+		  border-color: #9b4dca;
+		}
+
+		.button.button-outline,
+		button.button-outline,
+		input[type='button'].button-outline,
+		input[type='reset'].button-outline,
+		input[type='submit'].button-outline {
+		  background-color: transparent;
+		  color: #9b4dca;
+		}
+
+		.button.button-outline:focus, .button.button-outline:hover,
+		button.button-outline:focus,
+		button.button-outline:hover,
+		input[type='button'].button-outline:focus,
+		input[type='button'].button-outline:hover,
+		input[type='reset'].button-outline:focus,
+		input[type='reset'].button-outline:hover,
+		input[type='submit'].button-outline:focus,
+		input[type='submit'].button-outline:hover {
+		  background-color: transparent;
+		  border-color: #606c76;
+		  color: #606c76;
+		}
+
+		.button.button-outline[disabled]:focus, .button.button-outline[disabled]:hover,
+		button.button-outline[disabled]:focus,
+		button.button-outline[disabled]:hover,
+		input[type='button'].button-outline[disabled]:focus,
+		input[type='button'].button-outline[disabled]:hover,
+		input[type='reset'].button-outline[disabled]:focus,
+		input[type='reset'].button-outline[disabled]:hover,
+		input[type='submit'].button-outline[disabled]:focus,
+		input[type='submit'].button-outline[disabled]:hover {
+		  border-color: inherit;
+		  color: #9b4dca;
+		}
+
+		.button.button-clear,
+		button.button-clear,
+		input[type='button'].button-clear,
+		input[type='reset'].button-clear,
+		input[type='submit'].button-clear {
+		  background-color: transparent;
+		  border-color: transparent;
+		  color: #9b4dca;
+		}
+
+		.button.button-clear:focus, .button.button-clear:hover,
+		button.button-clear:focus,
+		button.button-clear:hover,
+		input[type='button'].button-clear:focus,
+		input[type='button'].button-clear:hover,
+		input[type='reset'].button-clear:focus,
+		input[type='reset'].button-clear:hover,
+		input[type='submit'].button-clear:focus,
+		input[type='submit'].button-clear:hover {
+		  background-color: transparent;
+		  border-color: transparent;
+		  color: #606c76;
+		}
+
+		.button.button-clear[disabled]:focus, .button.button-clear[disabled]:hover,
+		button.button-clear[disabled]:focus,
+		button.button-clear[disabled]:hover,
+		input[type='button'].button-clear[disabled]:focus,
+		input[type='button'].button-clear[disabled]:hover,
+		input[type='reset'].button-clear[disabled]:focus,
+		input[type='reset'].button-clear[disabled]:hover,
+		input[type='submit'].button-clear[disabled]:focus,
+		input[type='submit'].button-clear[disabled]:hover {
+		  color: #9b4dca;
+		}
+		table {
+			margin-bottom: 2.5rem;
+			border-spacing: 0;
+			display: block;
+			overflow-x: auto;
+			text-align: left;
+			width: 100%;
+		}
+
+		td,
+		th {
+			border-bottom: 0.1rem solid #e1e1e1;
+			padding: 1.2rem 1.5rem;
+		}
+
+		td:first-child,
+		th:first-child {
+			/*padding-left: 0;*/
+		}
+
+		td:last-child,
+		th:last-child {
+			padding-right: 0;
+		}
+
+		@media (min-width: 40rem) {
+			table {
+				display: table;
+				overflow-x: initial;
+			}
+		}
+		#container {
+			margin: 0 10% 0 10%;
+			width: 80%;
+			min-height: 100%;
+			text-align: center;
+			background: #3e4145;
+			color: white;
+		}
+		.label-container {
+			display: block;
+			padding-top: 2rem;
+			padding-bottom: 2rem;
+			font-weight: bolder;
+		}
+		#add-op {
+			margin-bottom: 2rem;
+		}
+		.label-style {
+			margin-left: 10px;
+			margin-right: 10px;
+			font-size: 15px;
+			font-weight: bolder;
+		}
+		.input-style {
+			background: #3e4145;
+			color: white;
+			font-weight: bold;
+			font-size: 15px;
+			border: 0;
+			border-bottom: thin solid;
+		}
+	</style>
+	<script type="text/javascript">
+		var http_port = parseInt("HTTP_PORT");
+		function regen() {
+			let container = document.getElementById('tasks-table');
+			let tasks = [];
+			for (let index = 0; index < container.childElementCount; index++) {
+				tasks[index] = {
+					"uuid": document.getElementById('task-uuid-' + index).innerText,
+					"command": document.getElementById('task-cmd-' + index).innerText,
+					"cron": document.getElementById('task-cron-' + index).innerText,
+					"bridge": parseInt(document.getElementById('task-bridge-' + index).innerText)
+				};
+			}
+			return {"tasks": tasks};
+		}
+
+		function updateTasks() {
+			let xmlhttp;
+			if (window.XMLHttpRequest) {
+				//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+				xmlhttp = new XMLHttpRequest();
+			} else {
+				// IE6, IE5 浏览器执行代码
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.onreadystatechange=function() {
+				if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+					window.alert(xmlhttp.responseText);
+				}
+			};
+			xmlhttp.open("POST", "http://127.0.0.1:" + http_port + "/tasks/manage", true);
+			let response = JSON.stringify(regen());
+			// console.info("send: " + response);
+			xmlhttp.send(response);
+		}
+
+		function addTask() {
+			if (document.getElementById('add-task-uuid').value === ""
+					|| document.getElementById('add-task-cmd').value === ""
+					|| document.getElementById('add-task-cron').value === ""
+					|| document.getElementById('add-task-bridge').value === ""
+			) {
+				alert("input all settings");
+				return;
+			}
+			let task = {
+				"uuid": document.getElementById('add-task-uuid').value,
+				"command": document.getElementById('add-task-cmd').value,
+				"cron": document.getElementById('add-task-cron').value,
+				"bridge": document.getElementById('add-task-bridge').value,
+			};
+			let container = document.getElementById('tasks-table');
+			let line = document.createElement("tr");
+			let index = container.childElementCount;
+			line.id = "task-" + index.toString();
+			let item_uuid = document.createElement('td');
+			let item_cmd = document.createElement('td');
+			let item_cron = document.createElement('td');
+			let item_bridge = document.createElement('td');
+			let item_rm = document.createElement('td');
+			let button = document.createElement('button');
+			item_uuid.id = "task-uuid-" + index.toString();
+			item_cmd.id = "task-cmd-" + index.toString();
+			item_cron.id = "task-cron-" + index.toString();
+			item_bridge.id = "task-bridge-" + index.toString();
+			button.id = "task-remove-" + index.toString();
+			button.innerText = 'DEL';
+			button.onclick = function () {
+				container.removeChild(line);
+				updateTasks();
+			};
+			item_rm.append(button);
+			// item_rm.innerHTML = "<button>DEL</button>";
+			item_uuid.innerText = task["uuid"].toString();
+			item_cmd.innerText = task["command"].toString();
+			item_cron.innerText = task["cron"].toString();
+			item_bridge.innerText = task["bridge"].toString();
+			line.append(item_uuid, item_cmd, item_cron, item_bridge, item_rm);
+			container.appendChild(line);
+			updateTasks();
+		}
+	</script>
+	<div id="container">
+		<label class="label-container">Advanced Dispatcher Tasks</label>
+		<hr>
+		<div>
+			<table>
+				<thead>
+					<tr>
+						<th>uuid</th>
+						<th>command</th>
+						<th>crontab</th>
+						<th>bridge</th>
+						<th>remove</th>
+					</tr>
+				</thead>
+				<tbody id="tasks-table">
+
+				</tbody>
+			</table>
+		</div>
+		<div class="label-containers">
+			<label class="label-style" for="input-uuid">uuid:</label>
+		</div>
+		<div class="input-containers">
+			<input class="input-style" type="text" name="input-uuid" id="add-task-uuid"><br><br>
+		</div>
+
+		<div class="label-containers">
+			<label class="label-style" for="input-cmd">command:</label>
+		</div>
+		<div class="input-containers">
+			<input class="input-style" type="text" name="input-cmd" id="add-task-cmd"><br><br>
+		</div>
+
+		<div class="label-containers">
+			<label class="label-style" for="input-crontab">crontab:</label>
+		</div>
+		<div class="input-containers">
+			<input class="input-style" type="text" name="input-crontab" id="add-task-cron"><br><br>
+		</div>
+
+		<div class="label-containers">
+			<label class="label-style" for="input-bridge">bridge:</label>
+		</div>
+		<div class="input-containers">
+			<input class="input-style" type="text" name="input-bridge" id="add-task-bridge"><br><br><br>
+		</div>
+		<button id="add-op" onclick="addTask()">add</button>
+	</div>
+	<script>
+		let xmlhttp;
+		if (window.XMLHttpRequest) {
+			//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+			xmlhttp = new XMLHttpRequest();
+		} else {
+			// IE6, IE5 浏览器执行代码
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function() {
+			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+				// console.info();
+				let resp = JSON.parse(xmlhttp.responseText);
+				let tasks = resp['tasks'];
+				let container = document.getElementById('tasks-table');
+				container.innerHTML = "";
+				for (let index in tasks) {
+					let task = tasks[index];
+					// console.info(tasks[index]);
+					if (task["uuid"] == null
+							|| task["command"] == null
+							|| task["cron"] == null
+							|| task["bridge"] == null
+					) {
+						continue;
+					}
+					let line = document.createElement("tr");
+					line.id = "task-" + index;
+					let item_uuid = document.createElement('td');
+					let item_cmd = document.createElement('td');
+					let item_cron = document.createElement('td');
+					let item_bridge = document.createElement('td');
+					let item_rm = document.createElement('td');
+					let button = document.createElement('button');
+					item_uuid.id = "task-uuid-" + index;
+					item_cmd.id = "task-cmd-" + index;
+					item_cron.id = "task-cron-" + index;
+					item_bridge.id = "task-bridge-" + index;
+					button.id = "task-remove-" + index;
+					button.innerText = 'DEL';
+					button.onclick = function () {
+						container.removeChild(line);
+						updateTasks();
+					};
+					item_rm.append(button);
+					// item_rm.innerHTML = "<button>DEL</button>";
+					item_uuid.innerText = task["uuid"].toString();
+					item_cmd.innerText = task["command"].toString();
+					item_cron.innerText = task["cron"].toString();
+					item_bridge.innerText = task["bridge"].toString();
+					line.append(item_uuid, item_cmd, item_cron, item_bridge, item_rm);
+					container.appendChild(line);
+				}
+				// document.getElementById("myDiv").innerHTML = xmlhttp.responseText;
+			}
+		};
+		xmlhttp.open("GET", "http://127.0.0.1:" + http_port + "/tasks/manage", true);
+		xmlhttp.send();
+	</script>
+</body>
+</html>
